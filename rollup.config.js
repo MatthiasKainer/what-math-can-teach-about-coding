@@ -6,7 +6,7 @@ import replace from '@rollup/plugin-replace';
 export default {
   input: './build/presentation-core.js',
   output: {
-    file: 'presentation-core.bundled.js',
+    file: './docs/presentation-core.bundled.js',
     format: 'esm',
   },
   onwarn(warning) {
