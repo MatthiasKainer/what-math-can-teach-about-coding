@@ -45,7 +45,7 @@ let PresentationCore = class PresentationCore extends LitElement {
       </presentation-page>
       <presentation-page>
         <h2>So let's build this, right?</h2>
-        <video src="/assets/the-mill.mp4" autoplay loop muted></video>
+        <video src="assets/the-mill.mp4" autoplay loop muted></video>
       </presentation-page>
       <presentation-page>
         <h1>Distance</h1>
