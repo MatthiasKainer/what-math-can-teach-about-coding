@@ -1,0 +1,1 @@
+{"version":3,"file":"ShowPathControls.d.ts","sourceRoot":"","sources":["../../../src/content/Rectangle/ShowPathControls.ts"],"names":[],"mappings":"AAAA,OAAO,EAAiB,UAAU,EAAuB,MAAM,aAAa,CAAC;AAC7E,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AACnC,qBACa,gBAAiB,SAAQ,UAAU;IAC9C,MAAM,KAAK,MAAM,oCAmBhB;IAED,QAAQ,EAAE,QAAQ,CAAY;IAC9B,QAAQ,CAAC,QAAQ,EAAE,QAAQ;IAS3B,MAAM;CAeP"}

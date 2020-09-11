@@ -1,0 +1,1 @@
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/math/rectangle/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,MAAM,EAAyB,MAAM,aAAa,CAAC;AAE3D,qBAAa,SAAS;IAgBD,MAAM,EAAE,MAAM;IAfjC,QAAQ,CAAC,KAAK,EAAE,SAAS;IAOzB,iBAAiB,CAAC,KAAK,EAAE,SAAS;IAIlC,QAAQ;gBAIW,MAAM,EAAE,MAAM;CAClC;AAED,eAAO,MAAM,IAAI,+BAA4C,CAAC"}

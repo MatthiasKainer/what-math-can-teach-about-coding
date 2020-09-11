@@ -1,0 +1,11 @@
+/node_modules/
+/lib/
+/test/
+
+# top level source
+/presentation-core.js
+/presentation-core.bundled*
+/presentation-core.test*
+/presentation-core.js.map
+/presentation-core.d.ts
+/presentation-core.d.ts.map

@@ -1,0 +1,1 @@
+{"version":3,"file":"euclid.d.ts","sourceRoot":"","sources":["../../../src/math/pathfinder/euclid.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,QAAQ,EAAE,MAAM,aAAa,CAAC;AAgDvC,oBAAY,IAAI,GAAG;IACjB,IAAI,EAAE,QAAQ,EAAE,CAAC;IACjB,KAAK,EAAE,MAAM,CAAC;CACf,CAAA;AAED,eAAO,MAAM,cAAc,sDAG1B,CAAA;AAED,eAAO,MAAM,aAAa;;;CACoF,CAAA"}

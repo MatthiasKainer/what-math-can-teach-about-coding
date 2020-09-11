@@ -1,0 +1,1 @@
+{"version":3,"file":"type.d.ts","sourceRoot":"","sources":["../../../src/math/pathfinder/type.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,QAAQ,EAAC,MAAM,aAAa,CAAC;AAErC,oBAAY,UAAU,GAAG;IACvB,IAAI,EAAE,QAAQ,EAAE,CAAC;IACjB,OAAO,CAAC,EAAE,MAAM,EAAE,CAAC;CACpB,CAAC"}

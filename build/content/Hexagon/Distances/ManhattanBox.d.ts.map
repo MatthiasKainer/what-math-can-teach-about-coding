@@ -1,0 +1,1 @@
+{"version":3,"file":"ManhattanBox.d.ts","sourceRoot":"","sources":["../../../../src/content/Hexagon/Distances/ManhattanBox.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,UAAU,EAAgC,MAAM,aAAa,CAAC;AACtE,OAAO,EAAC,kBAAkB,EAAC,MAAM,uBAAuB,CAAC;AAEzD,OAAO,YAAY,CAAC;AAIpB,qBACa,YAAa,SAAQ,UAAU;IAE1C,QAAQ,EAAE,kBAAkB,EAAE,EAAE,CAAM;IAEtC,MAAM;CAkCP"}
