@@ -1,5 +1,6 @@
-import {LitElement, customElement, property, html, css} from 'lit-element';
-import {Orientation, calculatorFactory} from './calculatorFactor';
+import {html, css} from 'lit';
+import { pureLit } from 'pure-lit';
+import {CardinalPoints, calculatorFactory} from './calculatorFactor';
 
 const LineStyle = css`
 :host {
@@ -20,30 +21,32 @@ svg line {
 }
 `;
 
-@customElement('line-element')
-export class Line extends LitElement {
-  static get styles() {
-    return [LineStyle]
-  }
+type Props = {
+  orientation: CardinalPoints;
+  parent: 'rectangle' | 'hexagon';
+  color: string | null;
+}
 
-  @property()
-  orientation: Orientation = 'none';
-  @property()
-  parent: 'rectangle' | 'hexagon' = 'rectangle';
-  @property()
-  color: string | null = null
+const defaults: Props = {
+  orientation: "none",
+  parent: 'rectangle',
+  color: null
+}
 
-  render() {
-    if (this.orientation === 'none') return html``;
-    const lineCoords = calculatorFactory(this.parent)(this.orientation);
+export default pureLit("line-element", ({orientation, parent, color}: Props) => {
+  if (orientation === 'none') return html``;
+    const lineCoords = calculatorFactory(parent)(orientation);
     return html`<svg>
       <line
         x1="${lineCoords.x1}"
         y1="${lineCoords.y1}"
         x2="${lineCoords.x2}"
         y2="${lineCoords.y2}"
-        style="${this.color ? "stroke:${this.color};" : ""}"
+        style="${color ? "stroke:${color};" : ""}"
       />
     </svg>`;
-  }
-}
+},
+{
+  styles: [LineStyle],
+  defaults
+})

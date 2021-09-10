@@ -1,12 +1,11 @@
-import { LitElement } from 'lit-element';
 import { InteractiveRectangle } from './InteractiveRectangle';
-import { Orientation } from '../Line';
-import "../Line/Line";
-export declare class RectangleElement extends LitElement {
-    static get styles(): import("lit-element").CSSResult;
+import { CardinalPoints } from '../Line';
+import '../Line/Line';
+declare type Props = {
     rect: InteractiveRectangle | null;
     show: 'distance' | 'coords' | 'none';
-    lines: Orientation[];
-    render(): import("lit-element").TemplateResult;
-}
+    lines: CardinalPoints[];
+};
+declare const _default: import("pure-lit").LitElementWithProps<Props>;
+export default _default;
 //# sourceMappingURL=RectangleElement.d.ts.map

@@ -1,72 +1,64 @@
-import {LitElement, customElement, html, property, css} from 'lit-element';
+import {html, css} from 'lit';
+import {dispatch, LitElementWithProps, pureLit} from 'pure-lit';
+import { Orientation, Coordinates } from './types';
 
-@customElement('hexagon-controls')
-export class HexagonControls extends LitElement {
-  static get styles() {
-    return css`
-      .controls {
-      }
-      button {
-        display: inline-block;
-        margin: 5px 0;
-        background: var(--colorShow);
-        border: 1px solid var(--colorShow);
-        color: var(--colorContrast);
-        cursor: pointer;
-        transition: all 1s linear;
-      }
-      button.active {
-        background: var(--colorContrast);
-        border: 1px solid var(--colorShow);
-        color: var(--colorShow);
-      }
-    `;
+const styles = css`
+  .controls {
   }
-
-  _setOrientation(orientation: 'flat' | 'pointy') {
-    const event = new CustomEvent('changeOrientation', {
-      detail: {
-        orientation,
-      },
-    });
-    this.orientation = orientation;
-    this.dispatchEvent(event);
+  button {
+    display: inline-block;
+    margin: 5px 0;
+    background: var(--colorShow);
+    border: 1px solid var(--colorShow);
+    color: var(--colorContrast);
+    cursor: pointer;
+    transition: all 1s linear;
   }
-
-  _setCoordinates(coordinates: string) {
-    const event = new CustomEvent('changeCoordinates', {
-      detail: {
-        coordinates,
-      },
-    });
-    this.coordinates = coordinates;
-    this.dispatchEvent(event);
+  button.active {
+    background: var(--colorContrast);
+    border: 1px solid var(--colorShow);
+    color: var(--colorShow);
   }
+`;
 
-  @property()
-  orientation: 'flat' | 'pointy' = 'flat';
+export type Props = {
+  orientation: Orientation;
+  coordinates: Coordinates;
+};
 
-  @property()
-  coordinates = 'even-q';
+const defaults: Props = {
+  orientation: 'flat',
+  coordinates: 'even-q',
+};
 
-  render() {
+export default pureLit(
+  'hexagon-controls',
+  (element: LitElementWithProps<Props>) => {
+
+    console.log("element.coordinates", element.coordinates)
     const cssClassOrientation = (orientation: string) => {
-      return this.orientation === orientation ? 'active' : '';
+      return element.orientation === orientation ? 'active' : '';
     };
     const cssClassCoords = (coordinates: string) => {
-      return this.coordinates.startsWith(coordinates) ? 'active' : '';
+      return element.coordinates?.startsWith(coordinates) ? 'active' : '';
     };
+    
+    const setOrientation = (orientation: 'flat' | 'pointy') =>
+      dispatch(element, 'changeOrientation', orientation);
+
+    const setCoordinates = (coordinates: Coordinates) => 
+      dispatch(element, 'changeCoordinates', coordinates);
 
     return html` <div class="controls">
         <button
           class="${cssClassOrientation('flat')}"
-          @click=${() => this._setOrientation('flat')}
+          @click=${() => setOrientation('flat')}
         >
           Flat
         </button>
         <button
           class="${cssClassOrientation('pointy')}"
-          @click=${() => this._setOrientation('pointy')}
+          @click=${() => setOrientation('pointy')}
         >
           Pointy
         </button>
@@ -74,16 +66,20 @@ export class HexagonControls extends LitElement {
       <div class="controls">
         <button
           class="${cssClassCoords('even')}"
-          @click=${() => this._setCoordinates('even-q-naive')}
+          @click=${() => setCoordinates('even-q-naive')}
         >
           Push Even Columns
         </button>
         <button
           class="${cssClassCoords('odd')}"
-          @click=${() => this._setCoordinates('odd-q-naive')}
+          @click=${() => setCoordinates('odd-q-naive')}
         >
           Push Odd Columns
         </button>
       </div>`;
+  },
+  {
+    defaults,
+    styles,
   }
-}
+);

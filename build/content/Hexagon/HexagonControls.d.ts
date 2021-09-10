@@ -1,10 +1,9 @@
-import { LitElement } from 'lit-element';
-export declare class HexagonControls extends LitElement {
-    static get styles(): import("lit-element").CSSResult;
-    _setOrientation(orientation: 'flat' | 'pointy'): void;
-    _setCoordinates(coordinates: string): void;
-    orientation: 'flat' | 'pointy';
-    coordinates: string;
-    render(): import("lit-element").TemplateResult;
-}
+import { LitElementWithProps } from 'pure-lit';
+import { Orientation, Coordinates } from './types';
+export declare type Props = {
+    orientation: Orientation;
+    coordinates: Coordinates;
+};
+declare const _default: LitElementWithProps<Props>;
+export default _default;
 //# sourceMappingURL=HexagonControls.d.ts.map

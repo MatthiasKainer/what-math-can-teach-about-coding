@@ -1,5 +1,5 @@
 import { InteractiveHexagon } from "../InteractiveHexagon";
-import { html } from "lit-element";
+import { html } from "lit";
 
 import "./ManhattanBox"
 import "./ManhattanCube"

@@ -1,13 +1,10 @@
-import { LitElement } from 'lit-element';
-export declare const stepSize = 100;
 import './Gatter';
 import './GatterElement';
 import './Point';
 import './Line';
-export declare class Graph extends LitElement {
-    static get styles(): import("lit-element").CSSResult;
+declare const _default: import("pure-lit").LitElementWithProps<{
     withGatter: boolean;
     withLines: boolean;
-    render(): import("lit-element").TemplateResult;
-}
+}>;
+export default _default;
 //# sourceMappingURL=Graph.d.ts.map

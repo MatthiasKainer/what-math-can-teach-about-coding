@@ -1,5 +1,3 @@
-import { LitElement } from 'lit-element';
-export declare class Gatter extends LitElement {
-    render(): import("lit-element").TemplateResult;
-}
+declare const _default: import("lit").LitElement;
+export default _default;
 //# sourceMappingURL=Gatter.d.ts.map

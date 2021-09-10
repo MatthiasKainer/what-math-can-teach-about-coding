@@ -1,7 +1,4 @@
-import { LitElement } from 'lit-element';
 import '../Line';
-export declare class Graph3D extends LitElement {
-    static get styles(): import("lit-element").CSSResult;
-    render(): import("lit-element").TemplateResult;
-}
+declare const _default: import("lit").LitElement;
+export default _default;
 //# sourceMappingURL=Graph.d.ts.map

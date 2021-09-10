@@ -1,9 +1,10 @@
 import {Cube} from '../../math/cube/cube';
 import {InteractiveHexagon} from './InteractiveHexagon';
-import {html, LitElement, customElement, css, property} from 'lit-element';
+import {html, css} from 'lit';
 import {p} from '../../math/position';
-import { PathResult } from '../../math/pathfinder/type';
-import { BroadthOptimizedDistance } from '../../math/pathfinder/broadthOptimized';
+import {PathResult} from '../../math/pathfinder/type';
+import {BroadthOptimizedDistance} from '../../math/pathfinder/broadthOptimized';
+import {pureLit} from 'pure-lit';
 
 export type HexagonLabel =
   | 'none'
@@ -14,10 +15,23 @@ export type HexagonLabel =
   | 'uncover-cube-breadth-distance'
   | 'uncover-cube-a*-distance';
 
-@customElement('label-uncover-distance')
-export class UncoverDistance extends LitElement {
-  static get styles() {
-    return css`
+type Props = {
+  distance?: number;
+  label?: string;
+};
+
+export default pureLit(
+  'label-uncover-distance',
+  (props: Props) => {
+    if (!props.distance) return html``;
+    return html`
+      <div style="animation-delay: ${props.distance / 2}s;">
+        ${props.label ?? props.distance}
+      </div>
+    `;
+  },
+  {
+    styles: css`
       div {
         display: inline-block;
         opacity: 0;
@@ -32,35 +46,18 @@ export class UncoverDistance extends LitElement {
           opacity: 1;
         }
       }
-    `;
+    `,
   }
-
-  @property({type: Number})
-  distance?: number = undefined
-  @property()
-  label?: string = undefined
-
-  render() {
-    if (!this.distance) return "";
-    return html`
-    <div style="animation-delay: ${this.distance/2}s;">
-      ${this.label ?? this.distance}
-    </div>
-    `
-  }
-}
+);
 
 const flattenHexagons = (hexagons: InteractiveHexagon[][]) =>
-  hexagons
-  .reduce((prev, curr) => [...prev, ...curr], [])
+  hexagons.reduce((prev, curr) => [...prev, ...curr], []);
 
 const findSelected = (hexagons: InteractiveHexagon[]) =>
-  hexagons
-    .find((h) => h.selected);
+  hexagons.find((h) => h.selected);
 
 const findBlocked = (hexagons: InteractiveHexagon[]) =>
-    hexagons
-      .filter((h) => h.blocked);
+  hexagons.filter((h) => h.blocked);
 
 export const showLabel = (
   cube: Cube,
@@ -87,29 +84,47 @@ export const showLabel = (
     case 'cube-coords':
       return html`${cube.z}<br />${cube.x}&nbsp;&nbsp;&nbsp;${cube.y}`;
     case 'uncover-cube-breadth-distance': {
-      const flatHexagons = flattenHexagons(hexagons)
+      const flatHexagons = flattenHexagons(hexagons);
       const selected = findSelected(flatHexagons);
-      if (!selected) return ``
+      console.log("Selected", selected)
+      if (!selected) return ``;
 
-      const map = flatHexagons.map(h => h.cube) 
-      const blocked = findBlocked(flatHexagons).map(b => b.cube)
-      const distance = BroadthOptimizedDistance(cube, selected.cube, (c) => !map.some(cube => cube.equals(c)) || blocked.some(cube => cube.equals(c)))
-      return html`<label-uncover-distance distance="${distance}" ></label-uncover-distance>`
+      const map = flatHexagons.map((h) => h.cube);
+      const blocked = findBlocked(flatHexagons).map((b) => b.cube);
+      const distance = BroadthOptimizedDistance(
+        cube,
+        selected.cube,
+        (c) =>
+          !map.some((cube) => cube.equals(c)) ||
+          blocked.some((cube) => cube.equals(c))
+      );
+      console.log("Uncover distance", distance)
+      return html`<label-uncover-distance
+        .distance="${distance}"
+      ></label-uncover-distance>`;
     }
     case 'uncover-cube-a*-distance': {
-      if (!pathResult) return ""
+      if (!pathResult) return '';
 
-      if (!pathResult.visited) return ""
+      if (!pathResult.visited) return '';
       if ([...pathResult.path].pop()!.equals(cube.toPosition())) {
-          return html`<label-uncover-distance distance="${pathResult.visited.length/2}" label="Goal"></label-uncover-distance>`
+        return html`<label-uncover-distance
+          .distance="${pathResult.visited.length / 2}"
+          .label=${"Goal"}
+        ></label-uncover-distance>`;
       }
-      const indexOfVisited = pathResult.visited.indexOf(cube.toPosition().toString())
-      if (indexOfVisited < 0) return ""
+      const indexOfVisited = pathResult.visited.indexOf(
+        cube.toPosition().toString()
+      );
+      if (indexOfVisited < 0) return '';
 
-      return html`<label-uncover-distance distance="${indexOfVisited/2}" label="Head"></label-uncover-distance>`
+      return html`<label-uncover-distance
+        .distance="${indexOfVisited / 2}"
+        .label=${"Head"}
+      ></label-uncover-distance>`;
     }
     case 'none':
-      return ""
+      return '';
     case 'coords':
     default:
       return `${p(cube.toCoords()).toString()}`;

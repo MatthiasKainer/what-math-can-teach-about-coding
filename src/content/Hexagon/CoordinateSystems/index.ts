@@ -1,4 +1,4 @@
-import {TemplateResult, html} from 'lit-element';
+import {TemplateResult, html} from 'lit';
 import {r} from '../../../arrays/range';
 import {statefulHexagon, InteractiveHexagon} from '../InteractiveHexagon';
 

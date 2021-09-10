@@ -1,4 +1,4 @@
-import { html } from 'lit-element';
+import { html } from 'lit';
 import { r } from '../../../arrays/range';
 import { statefulHexagon } from '../InteractiveHexagon';
 const naiveEvenCoordinateSystem = (hexagons, onRenderElement) => hexagons.map((rows, row) => html `<div class="row ${(row & 1) === 0 ? 'even' : 'odd'}">

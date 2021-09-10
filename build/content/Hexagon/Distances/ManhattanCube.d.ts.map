@@ -1,1 +1,1 @@
-{"version":3,"file":"ManhattanCube.d.ts","sourceRoot":"","sources":["../../../../src/content/Hexagon/Distances/ManhattanCube.ts"],"names":[],"mappings":"AAAA,OAAO,EAAC,UAAU,EAAgC,MAAM,aAAa,CAAC;AACtE,OAAO,EAAC,kBAAkB,EAAC,MAAM,uBAAuB,CAAC;AAEzD,OAAO,YAAY,CAAC;AAMpB,qBACa,aAAc,SAAQ,UAAU;IAE3C,QAAQ,EAAE,kBAAkB,EAAE,EAAE,CAAM;IAEtC,MAAM;CA6BP"}
+{"version":3,"file":"ManhattanCube.d.ts","sourceRoot":"","sources":["../../../../src/content/Hexagon/Distances/ManhattanCube.ts"],"names":[],"mappings":"AAIA,OAAO,YAAY,CAAC;;;;AASpB,wBAyCE"}

@@ -1,9 +1,8 @@
-import { LitElement } from 'lit-element';
 import { InteractiveRectangle } from '../InteractiveRectangle';
-export declare class ManhattanRectangleDistance extends LitElement {
-    static get styles(): import("lit-element").CSSResult;
+declare type Props = {
     selected: InteractiveRectangle | null;
     hover: InteractiveRectangle | null;
-    render(): import("lit-element").TemplateResult;
-}
+};
+declare const _default: import("pure-lit").LitElementWithProps<Props>;
+export default _default;
 //# sourceMappingURL=ManhattanRectangleDistance.d.ts.map

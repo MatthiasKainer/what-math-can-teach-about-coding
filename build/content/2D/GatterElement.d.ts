@@ -1,9 +1,7 @@
-import { LitElement } from 'lit-element';
-export declare class GatterElement extends LitElement {
-    static get styles(): import("lit-element").CSSResult;
+declare const _default: import("pure-lit").LitElementWithProps<{
     x: number;
     y: number;
     step: number;
-    render(): import("lit-element").TemplateResult;
-}
+}>;
+export default _default;
 //# sourceMappingURL=GatterElement.d.ts.map

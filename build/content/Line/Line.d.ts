@@ -1,10 +1,9 @@
-import { LitElement } from 'lit-element';
-import { Orientation } from './calculatorFactor';
-export declare class Line extends LitElement {
-    static get styles(): import("lit-element").CSSResult[];
-    orientation: Orientation;
+import { CardinalPoints } from './calculatorFactor';
+declare type Props = {
+    orientation: CardinalPoints;
     parent: 'rectangle' | 'hexagon';
     color: string | null;
-    render(): import("lit-element").TemplateResult;
-}
+};
+declare const _default: import("pure-lit").LitElementWithProps<Props>;
+export default _default;
 //# sourceMappingURL=Line.d.ts.map

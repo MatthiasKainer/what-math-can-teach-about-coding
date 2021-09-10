@@ -1,5 +1,6 @@
 import {Position} from '../../math/position';
-import { lineDrawer } from "../Line/lineDrawer";import { CubeAStarPathTo } from "../../math/pathfinder/a";
+import { lineDrawer } from "../Line/lineDrawer";
+import { CubeAStarPathTo } from "../../math/pathfinder/a";
 import { Cube } from '../../math/cube/cube';
 import { PathResult } from '../../math/pathfinder/type';
 

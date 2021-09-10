@@ -1,4 +1,4 @@
-export type Orientation =
+export type CardinalPoints =
   | 'none'
   | 'north'
   | 'south'
@@ -13,7 +13,7 @@ const c = (x1: string, y1: string, x2: string, y2: string) => {
   return {x1, y1, x2, y2};
 };
 
-const rectangleCalculator = (orientation: Orientation) => {
+const rectangleCalculator = (orientation: CardinalPoints) => {
   switch (orientation) {
     case 'south':
       return c('50%', '100%', '50%', '50%');

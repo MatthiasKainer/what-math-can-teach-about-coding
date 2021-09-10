@@ -1,6 +1,6 @@
-import { html } from "lit-element";
-export { ManhattanRectangleDistance } from "./ManhattanRectangleDistance";
-export { RectangleDistance } from "./RectangleDistance";
+import { html } from "lit";
+export * from "./ManhattanRectangleDistance";
+export * from "./RectangleDistance";
 export const distanceViewFactory = (distanceView, flatRectangles) => {
     switch (distanceView) {
         case 'manhattan':

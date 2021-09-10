@@ -1,67 +1,71 @@
-import {property, customElement, LitElement, css, html} from 'lit-element';
+import {css, html} from 'lit';
 import {InteractiveRectangle} from './InteractiveRectangle';
-import { Orientation } from '../Line';
-import "../Line/Line"
+import {CardinalPoints} from '../Line';
+import '../Line/Line';
+import {pureLit} from 'pure-lit';
 
-@customElement('rectangle-element')
-export class RectangleElement extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        position: relative;
-        display: inline-block;
-      }
-      div {
-        display: inline-block;
-        width: 4rem;
-        height: calc(4rem - 1rem);
-        background: var(--colorShow);
-        cursor: pointer;
-        border: 2px solid var(--colorMain);
-        padding-top: 1rem;
-        transition: all 250ms linear;
-      }
-      div.active {
-        background-color: var(--colorHighlight);
-        color: var(--colorShow);
-      }
-      div.hovered {
-        background-color: var(--colorFocus);
-        color: var(--colorShow);
-      }
-    `;
+const styles = css`
+  :host {
+    position: relative;
+    display: inline-block;
   }
-  @property({type: Object})
-  rect: InteractiveRectangle | null = null;
+  div {
+    display: inline-block;
+    width: 4rem;
+    height: calc(4rem - 1rem);
+    background: var(--colorShow);
+    cursor: pointer;
+    border: 2px solid var(--colorMain);
+    padding-top: 1rem;
+    transition: all 250ms linear;
+  }
+  div.active {
+    background-color: var(--colorHighlight);
+    color: var(--colorShow);
+  }
+  div.hovered {
+    background-color: var(--colorFocus);
+    color: var(--colorShow);
+  }
+`;
 
-  @property()
-  show: 'distance' | 'coords' | 'none' = 'coords';
+type Props = {
+  rect: InteractiveRectangle | null;
+  show: 'distance' | 'coords' | 'none';
+  lines: CardinalPoints[];
+};
 
-  @property({type: Array})
-  lines: Orientation[] = []
+const defaults: Props = {
+  rect: null,
+  show: 'coords',
+  lines: [],
+};
 
-  render() {
+export default pureLit(
+  'rectangle-element',
+  ({rect, show, lines}: Props) => {
     const classes = [
-      this.rect?.selected ? 'active' : '',
-      this.rect?.hovered ? 'hovered' : '',
+      rect?.selected ? 'active' : '',
+      rect?.hovered ? 'hovered' : '',
     ];
     const labels = () => {
-      switch (this.show) {
+      switch (show) {
         case 'distance':
-          return html`${this.rect?.distance.toString()}`;
+          return html`${rect?.distance.toString()}`;
         case 'none':
           return html`&nbsp;`;
         case 'coords':
         default:
-          return html`${this.rect?.rectangle.toString()}`;
+          return html`${rect?.rectangle.toString()}`;
       }
     };
 
-    const lines = () => 
-      this.lines.map(line => html`<line-element orientation="${line}"></line-element>`)
-
-    return html`${lines()}<div class="${classes.join(' ')}">
-      ${labels()}
-    </div>`;
-  }
-}
+    return html`${lines.map(
+        (line) => html`<line-element orientation="${line}"></line-element>`
+      )}
+      <div class="${classes.join(' ')}">
+        ${labels()}
+      </div>`;
+  },
+  {styles, defaults}
+);

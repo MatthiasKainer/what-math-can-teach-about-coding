@@ -1,20 +1,19 @@
-import { LitElement } from 'lit-element';
-import "./HexagonCube";
-import { Orientation } from '../Line';
-export declare class HexagonElement extends LitElement {
-    static get styles(): import("lit-element").CSSResult[];
-    orientation: string;
+import './HexagonCube';
+import { Orientation } from './types';
+import { CardinalPoints } from '../Line';
+import { LitElementWithProps } from 'pure-lit';
+declare type LabelOrientation = 'center' | 'top';
+declare type Props = {
+    orientation: Orientation;
     selected: boolean;
     hovered: boolean;
     blocked: boolean;
     showDirections: boolean;
     showCube: boolean;
-    label: "center" | "top";
+    label: LabelOrientation;
     size: string | null;
-    lines: Orientation[];
-    _select(): void;
-    _hover(): void;
-    _unhover(): void;
-    render(): import("lit-element").TemplateResult;
-}
+    lines: CardinalPoints[];
+};
+declare const _default: LitElementWithProps<Props>;
+export default _default;
 //# sourceMappingURL=HexagonElement.d.ts.map

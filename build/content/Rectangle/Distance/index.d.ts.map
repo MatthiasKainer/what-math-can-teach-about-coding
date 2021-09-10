@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../src/content/Rectangle/Distance/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,yBAAyB,CAAC;AAG/D,OAAO,EAAC,0BAA0B,EAAC,MAAM,8BAA8B,CAAA;AACvE,OAAO,EAAC,iBAAiB,EAAC,MAAM,qBAAqB,CAAA;AAGrD,eAAO,MAAM,mBAAmB,8GAoB7B,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../../src/content/Rectangle/Distance/index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,oBAAoB,EAAE,MAAM,yBAAyB,CAAC;AAG/D,cAAc,8BAA8B,CAAA;AAC5C,cAAc,qBAAqB,CAAA;AAEnC,eAAO,MAAM,mBAAmB,yGAoB7B,CAAC"}

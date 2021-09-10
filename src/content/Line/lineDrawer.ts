@@ -1,9 +1,9 @@
-import {Orientation} from '.';
+import {CardinalPoints} from '.';
 import {Path} from '../../math/pathfinder/RectPathfinder';
 import {Position} from '../../math/position';
 import {Cube} from '../../math/cube/cube';
 
-export type LineResult = {[key: string]: Orientation[]};
+export type LineResult = {[key: string]: CardinalPoints[]};
 
 export type LineType = 'cube' | 'rectangle';
 
@@ -41,8 +41,8 @@ export const lineDrawer = (
   const result: LineResult = {};
   if (!from) return result;
 
-  const transposeMap: {[key: string]: Orientation} = typeMaps[type] as {
-    [key: string]: Orientation;
+  const transposeMap: {[key: string]: CardinalPoints} = typeMaps[type] as {
+    [key: string]: CardinalPoints;
   };
 
   const toPositionType = (p: Position): Position | Cube =>

@@ -1,4 +1,4 @@
-import { html } from "lit-element";
+import { html } from "lit";
 import "./ManhattanBox";
 import "./ManhattanCube";
 export const distanceViewFactory = (distanceView, hexagons, style = "") => {

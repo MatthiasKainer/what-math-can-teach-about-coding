@@ -1,23 +1,20 @@
-import { LitElement } from 'lit-element';
 import './RectangleElement';
 import './RectangleRow';
-import "./ShowPathControls";
+import './ShowPathControls';
+import { LitElementWithProps } from 'pure-lit';
 export declare type ShowPath = 'euclid' | 'taxicab';
-export declare class RectangleContainer extends LitElement {
-    rectangles: import("./InteractiveRectangle").InteractiveRectangle[][];
-    static get styles(): import("lit-element").CSSResult;
-    constructor(rectangles?: import("./InteractiveRectangle").InteractiveRectangle[][]);
-    selectRectangle(selectedRowIndex: number, selectedColIndex: number): void;
-    hoverRectangle(selectedRowIndex: number, selectedColIndex: number): void;
-    show: 'distance' | 'coords' | 'none';
-    distance: string;
+declare type Distance = 'manhattan';
+declare type Show = 'distance' | 'coords' | 'none';
+declare type Props = {
+    show: Show;
+    distance: Distance;
     selectDefault: string | null;
     cols: number;
     showPath: ShowPath | null;
     showPathControls: boolean;
     euclidPathTo: string | null;
     manhattanPathTo: string | null;
-    connectedCallback(): void;
-    render(): import("lit-element").TemplateResult;
-}
+};
+declare const _default: LitElementWithProps<Props>;
+export default _default;
 //# sourceMappingURL=index.d.ts.map

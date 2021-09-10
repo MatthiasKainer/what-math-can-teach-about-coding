@@ -1,142 +1,116 @@
-import {customElement, LitElement, css, html, property} from 'lit-element';
+import {css, html} from 'lit';
 import {r} from '../../arrays/range';
 import {Position} from '../../math/position';
-import {statefulRectangle} from './InteractiveRectangle';
+import {InteractiveRectangle, statefulRectangle} from './InteractiveRectangle';
 import {distanceViewFactory} from './Distance';
 
 import './RectangleElement';
 import './RectangleRow';
 import {lineDrawer, LineResult} from '../Line/lineDrawer';
-import "./ShowPathControls"
-import { euclidDistance, manhattanDistance } from '../../math/pathfinder/RectPathfinder';
+import './ShowPathControls';
+import {
+  euclidDistance,
+  manhattanDistance,
+} from '../../math/pathfinder/RectPathfinder';
+import {LitElementWithProps, pureLit, useOnce, useState} from 'pure-lit';
 
 export type ShowPath = 'euclid' | 'taxicab';
+type Distance = 'manhattan';
 
-@customElement('rectangle-container')
-export class RectangleContainer extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        margin-top: calc(16rem - 20px);
-      }
-    `;
+const styles = css`
+  :host {
+    display: block;
+    margin-top: calc(16rem - 20px);
   }
+`;
 
-  constructor(
-    public rectangles = r(0, 3).map((row) =>
-      r(0, 3).map((col) => statefulRectangle({row, col}))
-    )
-  ) {
-    super();
-  }
+type Show = 'distance' | 'coords' | 'none';
 
-  selectRectangle(selectedRowIndex: number, selectedColIndex: number) {
-    this.rectangles.forEach((row, rowIndex) => {
-      row.forEach((rectangle, colIndex) => {
-        if (rowIndex === selectedRowIndex && colIndex === selectedColIndex) {
-          this.rectangles[rowIndex][colIndex] = statefulRectangle(
-            rectangle.rectangle.coords,
-            !rectangle.selected
-          );
-        } else if (this.show === "distance") {
-          this.rectangles[rowIndex][colIndex] = statefulRectangle(
-            rectangle.rectangle.coords,
-            false
-          );
-          this.rectangles[rowIndex][colIndex].distance = this.rectangles[
-            selectedRowIndex
-          ][selectedColIndex].rectangle.manhattanDistance(
-            this.rectangles[rowIndex][colIndex].rectangle
-          );
-        } else if (rectangle.selected) {
-          this.rectangles[rowIndex][colIndex] = statefulRectangle(
-            rectangle.rectangle.coords,
-            false
-          );
-        }
-      });
-    });
-  }
+type Props = {
+  show: Show;
+  distance: Distance;
+  selectDefault: string | null;
+  cols: number;
+  showPath: ShowPath | null;
+  showPathControls: boolean;
+  euclidPathTo: string | null;
+  manhattanPathTo: string | null;
+};
 
-  hoverRectangle(selectedRowIndex: number, selectedColIndex: number) {
-    if (this.show === "distance") return;
-    this.rectangles.forEach((row, rowIndex) => {
-      row.forEach((rectangle, colIndex) => {
-        if (rowIndex === selectedRowIndex && colIndex === selectedColIndex) {
-          this.rectangles[rowIndex][colIndex] = statefulRectangle(
-            rectangle.rectangle.coords,
-            rectangle.selected,
-            true
-          );
-        } else if (rectangle.hovered) {
-          this.rectangles[rowIndex][colIndex] = statefulRectangle(
-            rectangle.rectangle.coords,
-            rectangle.selected,
-            false
-          );
-        }
-      });
-    });
-  }
+const defaults: Props = {
+  show: 'coords',
+  distance: 'manhattan',
+  selectDefault: null,
+  cols: 3,
+  showPath: null,
+  showPathControls: false,
+  euclidPathTo: null,
+  manhattanPathTo: null,
+};
 
-  @property()
-  show: 'distance' | 'coords' | 'none' = 'coords';
-  @property()
-  distance = 'manhattan';
-  @property()
-  selectDefault: string | null = null;
-  @property()
-  cols = 3;
-
-  @property()
-  showPath: ShowPath | null = null;
-  @property({type: Boolean})
-  showPathControls = false;
-  @property()
-  euclidPathTo: string | null = null;
-  @property()
-  manhattanPathTo: string | null = null;
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.rectangles = r(0, this.cols).map((row) =>
-      r(0, this.cols).map((col) => statefulRectangle({row, col}))
+export default pureLit(
+  'rectangle-container',
+  (element: LitElementWithProps<Props>) => {
+    const initalElements = r(0, element.cols).map((row) =>
+      r(0, element.cols).map((col) => statefulRectangle({row, col}))
+    );
+    const rectangle = useState(
+      element,
+      initalElements
+    );
+    const showPath = useState(
+      element,
+      element.showPath
     );
 
-    if (this.selectDefault) {
-      const selected = Position.fromString(this.selectDefault);
-      if (selected) this.selectRectangle(selected.row, selected.col);
-    }
-  }
+    useOnce(element, () => {
+      if (element.selectDefault) {
+        const selected = Position.fromString(element.selectDefault);
+        if (selected) {
+          rectangle.set(
+            selectRectangle(
+              rectangle.get(),
+              element.show,
+              selected.row,
+              selected.col
+            )
+          );
+        }
+      }
+    });
 
-  render() {
     const flatRectangles = () =>
-      this.rectangles.reduce((prev, curr) => [...prev, ...curr], []);
+      rectangle.get().reduce((prev, curr) => [...prev, ...curr], []);
 
-    const distanceView = distanceViewFactory(this.distance, flatRectangles);
+    const distanceView = distanceViewFactory(element.distance, flatRectangles);
 
     const drawLine = () => {
-      switch (this.showPath) {
+      switch (showPath.get()) {
         case 'euclid':
-          if (!this.euclidPathTo) return null;
+          if (!element.euclidPathTo) return null;
           return lineDrawer(
-            Position.fromString(this.selectDefault!),
-            euclidDistance(Position.fromString(this.selectDefault!), Position.fromString(this.euclidPathTo))
+            Position.fromString(element.selectDefault!),
+            euclidDistance(
+              Position.fromString(element.selectDefault!),
+              Position.fromString(element.euclidPathTo)
+            )
           );
-        case "taxicab":
-          if (!this.manhattanPathTo) return null;
+        case 'taxicab':
+          if (!element.manhattanPathTo) return null;
           return lineDrawer(
-            Position.fromString(this.selectDefault!),
-            manhattanDistance(Position.fromString(this.selectDefault!), Position.fromString(this.manhattanPathTo))
+            Position.fromString(element.selectDefault!),
+            manhattanDistance(
+              Position.fromString(element.selectDefault!),
+              Position.fromString(element.manhattanPathTo)
+            )
           );
         default:
           return null;
       }
     };
 
-    const lines: LineResult | null = drawLine()
-    return html`${this.rectangles.map(
+    const lines: LineResult | null = drawLine();
+    return html`${rectangle.get().map(
       (row, rowIndex) =>
         html`<rectangle-row>
           ${row.map(
@@ -145,27 +119,99 @@ export class RectangleContainer extends LitElement {
               .lines="${lines
                 ? lines[new Position(rowIndex, colIndex).toString()] ?? []
                 : []}"
-              show="${this.show}"
+              show="${element.show}"
               @click="${() => {
-                this.selectRectangle(rowIndex, colIndex);
-                this.requestUpdate();
+                rectangle.set(
+                  selectRectangle(
+                    rectangle.get(),
+                    element.show,
+                    rowIndex,
+                    colIndex
+                  )
+                );
               }}"
               @mouseover=${() => {
-                this.hoverRectangle(rowIndex, colIndex);
-                this.requestUpdate();
+                rectangle.set(
+                  hoverRectangle(rectangle.get(), element.show, rowIndex, colIndex)
+                );
               }}
             ></rectangle-element>`
           )}
         </rectangle-row>`
     )}
-    ${this.showPathControls
+    ${element.showPathControls
       ? html`
           <rectangle-showpath-controls
-            @changeShowPath="${(e: CustomEvent) =>
-              {this.showPath = e.detail.showPath; this.requestUpdate()}}"
+            showPath=${showPath.get()}
+            @changeShowPath="${(e: CustomEvent) => {
+              showPath.set(e.detail.showPath);
+            }}"
           ></rectangle-showpath-controls>
         `
       : ''}
     ${distanceView}`;
+  },
+  {
+    styles,
+    defaults,
   }
+);
+
+function selectRectangle(
+  rectangles: InteractiveRectangle[][],
+  show: Show,
+  selectedRowIndex: number,
+  selectedColIndex: number
+) {
+  rectangles.forEach((row, rowIndex) => {
+    row.forEach((rectangle, colIndex) => {
+      if (rowIndex === selectedRowIndex && colIndex === selectedColIndex) {
+        rectangles[rowIndex][colIndex] = statefulRectangle(
+          rectangle.rectangle.coords,
+          !rectangle.selected
+        );
+      } else if (show === 'distance') {
+        rectangles[rowIndex][colIndex] = statefulRectangle(
+          rectangle.rectangle.coords,
+          false
+        );
+        rectangles[rowIndex][colIndex].distance = rectangles[selectedRowIndex][
+          selectedColIndex
+        ].rectangle.manhattanDistance(rectangles[rowIndex][colIndex].rectangle);
+      } else if (rectangle.selected) {
+        rectangles[rowIndex][colIndex] = statefulRectangle(
+          rectangle.rectangle.coords,
+          false
+        );
+      }
+    });
+  });
+  return [...rectangles];
+}
+
+function hoverRectangle(
+  rectangles: InteractiveRectangle[][],
+  show: Show,
+  selectedRowIndex: number,
+  selectedColIndex: number
+) {
+  if (show === 'distance') return rectangles;
+  rectangles.forEach((row, rowIndex) => {
+    row.forEach((rectangle, colIndex) => {
+      if (rowIndex === selectedRowIndex && colIndex === selectedColIndex) {
+        rectangles[rowIndex][colIndex] = statefulRectangle(
+          rectangle.rectangle.coords,
+          rectangle.selected,
+          true
+        );
+      } else if (rectangle.hovered) {
+        rectangles[rowIndex][colIndex] = statefulRectangle(
+          rectangle.rectangle.coords,
+          rectangle.selected,
+          false
+        );
+      }
+    });
+  });
+  return [...rectangles];
 }

@@ -1,49 +1,53 @@
-import { customElement, LitElement, css, html, property } from 'lit-element';
-import { InteractiveRectangle } from '../InteractiveRectangle';
-@customElement('rectangle-distance')
-export class RectangleDistance extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        margin: 5px auto;
-        width: 20rem;
-      }
-      .presenter {
-        display: flex;
-      }
-      .presenter div {
-        flex-grow: 1;
-      }
-      .presenter div:first-child {
-        text-align: left;
-      }
-      .presenter div:last-child {
-        text-align: right;
-      }
-    `;
+import { css, html } from 'lit';
+import {pureLit} from 'pure-lit';
+import {InteractiveRectangle} from '../InteractiveRectangle';
+
+const styles = css`
+  :host {
+    display: block;
+    margin: 5px auto;
+    width: 70vw;
   }
-  @property({ type: Object })
-  selected: InteractiveRectangle | null = null;
-  @property({ type: Object })
-  hover: InteractiveRectangle | null = null;
-  render() {
-    if (!this.selected || !this.hover)
-      return html``;
-    return html`<div>
-        ${this.selected.rectangle.toString()} ->
-        ${this.hover.rectangle.toString()}
-      </div>
-      <div class="presenter">
-        <div>
-          sqrt((${this.hover.rectangle.coords.col} -
-          ${this.selected.rectangle.coords.col})^2 +
-          (${this.hover.rectangle.coords.row} -
-          ${this.selected.rectangle.coords.row})^2)
-        </div>
-        <div>
-          = ${this.selected.rectangle.distance(this.hover.rectangle).toFixed(2)}
-        </div>
-      </div>`;
+  .presenter {
+    display: flex;
+    font-size: 2rem;
   }
+  .presenter div {
+    flex-grow: 1;
+  }
+  .presenter div:first-child {
+    text-align: left;
+  }
+  .presenter div:last-child {
+    text-align: right;
+  }
+`;
+
+type Props = {
+  selected: InteractiveRectangle | null;
+  hover: InteractiveRectangle | null;
+};
+
+const defaults = {
+  selected: null,
+  hover: null
 }
+
+export default pureLit('rectangle-distance', ({selected, hover}: Props) => {
+  if (!selected || !hover) return html``;
+  return html`<div>
+      ${selected.rectangle.toString()} ->
+      ${hover.rectangle.toString()}
+    </div>
+    <div class="presenter">
+      <div>
+        sqrt((${hover.rectangle.coords.col} -
+        ${selected.rectangle.coords.col})^2 +
+        (${hover.rectangle.coords.row} -
+        ${selected.rectangle.coords.row})^2)
+      </div>
+      <div>
+        = ${selected.rectangle.distance(hover.rectangle).toFixed(2)}
+      </div>
+    </div>`;
+}, { styles, defaults });

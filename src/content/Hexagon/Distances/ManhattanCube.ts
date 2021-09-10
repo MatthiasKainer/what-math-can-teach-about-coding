@@ -1,24 +1,25 @@
-import {LitElement, customElement, property, html} from 'lit-element';
+import {html} from 'lit';
+import {pureLit} from 'pure-lit';
 import {InteractiveHexagon} from '../InteractiveHexagon';
 
 import './Distance';
 import {DistanceRenderer} from './Distance';
 
-const rn = (n: number) => 
-    n >= 0 ? `+${n}` : `${n}`
+const rn = (n: number) => (n >= 0 ? `+${n}` : `${n}`);
 
-@customElement('hexagon-distance-manahattan-cube-hint')
-export class ManhattanCube extends LitElement {
-  @property()
-  hexagons: InteractiveHexagon[][] = [];
+type Props = {
+  hexagons: InteractiveHexagon[][];
+};
 
-  render() {
-    const selected = this.hexagons.reduce(
+export default pureLit(
+  'hexagon-distance-manahattan-cube-hint',
+  (props: Props) => {
+    const selected = props.hexagons.reduce(
       (_: InteractiveHexagon | undefined, row) =>
         _ || row.find((hexagon) => hexagon.selected),
       undefined
     );
-    const hovered = this.hexagons.reduce(
+    const hovered = props.hexagons.reduce(
       (_: InteractiveHexagon | undefined, row) =>
         _ || row.find((hexagon) => hexagon.hovered),
       undefined
@@ -35,10 +36,20 @@ ${rn(hovered.cube.x)} -> ${rn(selected.cube.x)}
 ${rn(hovered.cube.y)} -> ${rn(selected.cube.y)}
 ${rn(hovered.cube.z)} -> ${rn(selected.cube.z)}
 </pre>`,
-          () => html`<pre style="font-size: 1rem;"><br> => &nbsp;&nbsp;&nbsp;${selected.cube.distance(hovered.cube).toString()}</pre>`,
+          () =>
+            html`<pre
+              style="font-size: 1rem;"
+            ><br> => &nbsp;&nbsp;&nbsp;${selected.cube
+              .distance(hovered.cube)
+              .toString()}</pre>`,
           (hexagon: InteractiveHexagon) => hexagon.cube.toString()
         )}
       ></hexagon-distance>
     `;
+  },
+  {
+    defaults: {
+      hexagons: [],
+    },
   }
-}
+);

@@ -1,22 +1,24 @@
-import {LitElement, customElement, property, html} from 'lit-element';
+import {html} from 'lit';
 import {InteractiveHexagon} from '../InteractiveHexagon';
 
 import './Distance';
 import {manhattanPointDistance} from '../../../math/position';
-import { DistanceRenderer } from './Distance';
+import {DistanceRenderer} from './Distance';
+import {pureLit} from 'pure-lit';
 
-@customElement('hexagon-distance-manahattan-box')
-export class ManhattanBox extends LitElement {
-  @property()
-  hexagons: InteractiveHexagon[][] = [];
+type Props = {
+  hexagons: InteractiveHexagon[][];
+};
 
-  render() {
-    const selected = this.hexagons.reduce(
+export default pureLit(
+  'hexagon-distance-manahattan-box',
+  (props: Props) => {
+    const selected = props.hexagons.reduce(
       (_: InteractiveHexagon | undefined, row) =>
         _ || row.find((hexagon) => hexagon.selected),
       undefined
     );
-    const hovered = this.hexagons.reduce(
+    const hovered = props.hexagons.reduce(
       (_: InteractiveHexagon | undefined, row) =>
         _ || row.find((hexagon) => hexagon.hovered),
       undefined
@@ -26,22 +28,24 @@ export class ManhattanBox extends LitElement {
       <hexagon-distance
         .selected=${selected}
         .hovered=${hovered}
-        .renderer=${
-            new DistanceRenderer(
-                () =>
-                `${selected.cube
-                  .toPosition()
-                  .toString()}-${hovered.cube.toPosition().toString()}`,
-                () =>
-                  manhattanPointDistance(
-                    selected.cube.toCoords(),
-                    hovered.cube.toCoords()
-                  ).toString(),
-                (hexagon: InteractiveHexagon) =>
-                  hexagon.cube.toPosition().toString()
-            )
-        }
+        .renderer=${new DistanceRenderer(
+          () =>
+            `${selected.cube
+              .toPosition()
+              .toString()}-${hovered.cube.toPosition().toString()}`,
+          () =>
+            manhattanPointDistance(
+              selected.cube.toCoords(),
+              hovered.cube.toCoords()
+            ).toString(),
+          (hexagon: InteractiveHexagon) => hexagon.cube.toPosition().toString()
+        )}
       ></hexagon-distance>
     `;
+  },
+  {
+    defaults: {
+      hexagons: [],
+    },
   }
-}
+);

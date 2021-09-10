@@ -9,6 +9,7 @@ export default {
     file: './docs/presentation-core.bundled.js',
     format: 'esm',
   },
+  //external: ["lit", "pure-lit"],
   onwarn(warning) {
     if (warning.code !== 'THIS_IS_UNDEFINED') {
       console.error(`(!) ${warning.message}`);

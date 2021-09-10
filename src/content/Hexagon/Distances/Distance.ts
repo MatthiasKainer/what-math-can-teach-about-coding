@@ -1,4 +1,5 @@
-import {LitElement, customElement, html, property, css, TemplateResult} from 'lit-element';
+import {html, css, TemplateResult} from 'lit';
+import { pureLit } from 'pure-lit';
 import {InteractiveHexagon} from '../InteractiveHexagon';
 
 export class DistanceRenderer {
@@ -11,52 +12,46 @@ export class DistanceRenderer {
 }
 
 function isTemplateResult(value: string | TemplateResult): value is TemplateResult {
-  return value !== undefined && value !== null && (value as TemplateResult).processor !== undefined
+  return value !== undefined && value !== null && (value as TemplateResult)._$litType$ !== undefined
 }
 
-@customElement('hexagon-distance')
-export class Distance extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        margin: 5px auto;
-        width: 100%;
-      }
-      .presenter {
-        display: flex;
-      }
-      .presenter div {
-        flex-grow: 1;
-      }
-      .presenter div:first-child {
-        text-align: left;
-      }
-      .presenter div:last-child {
-        text-align: right;
-      }
-    `;
-  }
+type Props = {
+  selected: InteractiveHexagon | null;
+  hovered: InteractiveHexagon | null;
 
-  @property({type: Object})
-  selected: InteractiveHexagon | null = null;
-  @property({type: Object})
-  hovered: InteractiveHexagon | null = null;
+  hideHead : boolean;
 
-  @property({type: Boolean})
-  hideHead = false
+  renderer: DistanceRenderer;
+}
 
-  @property({type: Object})
-  renderer: DistanceRenderer = new DistanceRenderer();
+const styles = css`
+:host {
+  display: block;
+  margin: 5px auto;
+  width: 100%;
+}
+.presenter {
+  display: flex;
+}
+.presenter div {
+  flex-grow: 1;
+}
+.presenter div:first-child {
+  text-align: left;
+}
+.presenter div:last-child {
+  text-align: right;
+}
+`;
 
-  render() {
-    if (!this.selected || !this.hovered) return html``;
-    const {show, printFormula, printResult} = this.renderer;
+export default pureLit('hexagon-distance', (prop: Props) => {
+  if (!prop.selected || !prop.hovered) return html``;
+    const {show, printFormula, printResult} = prop.renderer;
     const result = printResult()
     const renderedResult = isTemplateResult(result) 
       ? result : `= ${result}`
-    return html`${!this.hideHead ? html`<div>
-        ${show(this.selected)} -> ${show(this.hovered)}
+    return html`${!prop.hideHead ? html`<div>
+        ${show(prop.selected)} -> ${show(prop.hovered)}
       </div>` : ""}
       <div class="presenter">
         <div>
@@ -66,5 +61,12 @@ export class Distance extends LitElement {
           ${renderedResult}
         </div>
       </div>`;
+}, {
+  styles,
+  defaults: {
+    selected: null,
+    hovered: null,
+    hideHead: false,
+    renderer: new DistanceRenderer()
   }
-}
+})

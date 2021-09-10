@@ -1,9 +1,8 @@
 import { InteractiveRectangle } from "../InteractiveRectangle";
-import { html } from "lit-element";
+import { html } from "lit";
 
-export {ManhattanRectangleDistance} from "./ManhattanRectangleDistance"
-export {RectangleDistance} from "./RectangleDistance"
-
+export * from "./ManhattanRectangleDistance"
+export * from "./RectangleDistance"
 
 export const distanceViewFactory = (
     distanceView: string,

@@ -1,49 +1,50 @@
-import { customElement, LitElement, css, html, property } from 'lit-element';
-import { InteractiveRectangle } from '../InteractiveRectangle';
-@customElement('rectangle-manhattan-distance')
-export class ManhattanRectangleDistance extends LitElement {
-  static get styles() {
-    return css`
-      :host {
-        display: block;
-        margin: 5px auto;
-        width: 20rem;
-      }
-      .presenter {
-        display: flex;
-      }
-      .presenter div {
-        flex-grow: 1;
-      }
-      .presenter div:first-child {
-        text-align: left;
-      }
-      .presenter div:last-child {
-        text-align: right;
-      }
-    `;
+import {css, html} from 'lit';
+import {pureLit} from 'pure-lit';
+import {InteractiveRectangle} from '../InteractiveRectangle';
+
+const styles = css`
+  :host {
+    display: block;
+    margin: 5px auto;
+    width: 20rem;
   }
-  @property({ type: Object })
-  selected: InteractiveRectangle | null = null;
-  @property({ type: Object })
-  hover: InteractiveRectangle | null = null;
-  render() {
-    if (!this.selected || !this.hover)
-      return html``;
+  .presenter {
+    display: flex;
+  }
+  .presenter div {
+    flex-grow: 1;
+  }
+  .presenter div:first-child {
+    text-align: left;
+  }
+  .presenter div:last-child {
+    text-align: right;
+  }
+`;
+
+type Props = {
+  selected: InteractiveRectangle | null;
+  hover: InteractiveRectangle | null;
+};
+
+export default pureLit(
+  'rectangle-manhattan-distance',
+  ({selected, hover}: Props) => {
+    if (!selected || !hover) return html``;
     return html`<div>
-        ${this.selected.rectangle.toString()} ->
-        ${this.hover.rectangle.toString()}
+        ${selected.rectangle.toString()} -> ${hover.rectangle.toString()}
       </div>
       <div class="presenter">
         <div>
-          |${this.hover.rectangle.coords.col} -
-          ${this.selected.rectangle.coords.col}| +
-          |${this.hover.rectangle.coords.row} -
-          ${this.selected.rectangle.coords.row}|
+          |${hover.rectangle.coords.col} - ${selected.rectangle.coords.col}| +
+          |${hover.rectangle.coords.row} - ${selected.rectangle.coords.row}|
         </div>
         <div>
-          = ${this.selected.rectangle.manhattanDistance(this.hover.rectangle)}
+          = ${selected.rectangle.manhattanDistance(hover.rectangle)}
         </div>
       </div>`;
+  },
+  { 
+    styles
   }
-}
+);

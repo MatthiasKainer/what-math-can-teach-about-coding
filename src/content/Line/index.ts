@@ -1,3 +1,3 @@
 
 export * from "./Line"
-export {Orientation} from "./calculatorFactor"
+export {CardinalPoints} from "./calculatorFactor"
