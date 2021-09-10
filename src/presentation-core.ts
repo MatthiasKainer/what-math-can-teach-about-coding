@@ -210,16 +210,21 @@ function toCube({col, row}) {
         <h2>Naive shortest path</h2>
         <pre style="text-align:left; font-size: 2rem;">
 
-
-
-
-  const distance = 0;
+  <span style="color: var(--colorHighlight);">// We start at the first field</span>
   let current = start;
+  <span style="color: var(--colorHighlight);">// the path to our goal is empty</span>
   const path = [];
+  <span style="color: var(--colorHighlight);">// as long as we haven't reached the goal</span>
   while (!current.equals(goal)) {
+    <span style="color: var(--colorHighlight);">// we check all neighbors</span>
     current = neighbors(current)
+      <span style="color: var(--colorHighlight);">// Use our taxicab distance calculator to calculate the distance to the goal</span>
       .map(next => distance(next, goal))
-      .sort().first();
+      <span style="color: var(--colorHighlight);">// sort by the calculated distance</span>
+      .sort()
+      <span style="color: var(--colorHighlight);">// select the closest as our next field to search from</span>
+      .first();
+    <span style="color: var(--colorHighlight);">// store the current, as it's on our path now</span>
     path.push(current)
   }
         </pre>
