@@ -1169,7 +1169,7 @@ function toCube({col, row}) {
         <div class="profile">
           <img class="round" src="images/mkainer.jpg" alt="Matthias Kainer" />
           <h5>Matthias Kainer</h5>
-          <h6>Thoughtworks</h6>
+          <h6>Volocopter GmbH</h6>
           <div class="info">
             <div>
               <div class="title">
